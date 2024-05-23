@@ -1,15 +1,11 @@
 package br.com.project.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.project.service.MathService;
-import br.com.project.valitator.impl.ValidadorNumerico;
 
 @Component
 public class MathServiceImpl implements MathService {
-
-	@Autowired private ValidadorNumerico validator;
 	
 	@Override
 	public Double sum(String strNumberOne, String strNumberTwo) {
@@ -51,7 +47,14 @@ public class MathServiceImpl implements MathService {
 		if(strNumber == null) return 0D;
 		//BR 10,25 US 10.25
 		String number = strNumber.replaceAll(",",".");
-		if(validator.isNumeric(number)) return Double.parseDouble(number);
+		if(isNumeric(number)) return Double.parseDouble(number);
 		return 0D;
+	}
+	
+	private boolean isNumeric(String strNumber) {
+		if(strNumber == null) return false;
+		String IS_NUMBER = "[-+]?[0-9]*\\.?[0-9]+";
+		String number = strNumber.replaceAll(",", ".");
+		return number.matches(IS_NUMBER);
 	}
 }

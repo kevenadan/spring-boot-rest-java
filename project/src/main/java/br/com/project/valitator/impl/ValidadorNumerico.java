@@ -1,43 +1,31 @@
 package br.com.project.valitator.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import br.com.project.TipoCodigoErro;
-import br.com.project.exceptions.ValidatorException;
+import br.com.project.exceptions.UnsupportedMathOperationException;
 import br.com.project.valitator.CheckableValidator;
+import br.com.project.valitator.Validator;
 
 @Component
-public class ValidadorNumerico implements CheckableValidator<String> {
+public class ValidadorNumerico implements Validator<String> {
 
+	@Autowired
+	@Qualifier("validadorValorObrigatorio")
+	private CheckableValidator<String> validatorValorObrigatorio;
+	
 	@Override
-	public void validar(String nome, String valor) throws ValidatorException {
-		if(verificar(nome, valor)) {
-			if(nome != null) {
-				throw new ValidatorException(
-						String.format("O valor '%s' do atributo 's' não é um numérico válido.",valor, nome), TipoCodigoErro.ERRO_VALIDACAO_DADO);
-			} else {
-				throw new ValidatorException(
-						String.format("O valor '%s' é um número válido", valor), TipoCodigoErro.ERRO_VALIDACAO_DADO);
-			}
+	public void validar(String nome, String valor) {
+		validatorValorObrigatorio.validar(valor);
+		if(!isNumeric(valor)) {
+			throw new UnsupportedMathOperationException("informe um valor numérico");
 		}
 	}
 	
 	@Override
-	public void validar(String valor) throws ValidatorException {
+	public void validar(String valor) {
 		validar(null, valor);
-	}
-
-	@Override
-	public boolean verificar(String valor) {
-		if(valor == null || valor.trim().isEmpty()) return false;
-		
-		return true;
-	}
-	
-	@Override
-	public boolean verificar(String nome, String valor) {		
-	
-		return verificar(valor);
 	}
 
 	private boolean isNumeric(String strNumber) {

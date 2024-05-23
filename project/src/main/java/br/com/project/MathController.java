@@ -1,19 +1,20 @@
 package br.com.project;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.project.exceptions.UnsupportedMathOperationException;
 import br.com.project.service.MathService;
-import br.com.project.valitator.impl.ValidadorNumerico;
+import br.com.project.valitator.Validator;
 
 @RestController
 public class MathController {
 	
-	@Autowired private ValidadorNumerico validator;
+	@Qualifier("validadorNumerico")
+	@Autowired private Validator<String> validador;
 	@Autowired private MathService service;
 
 	@RequestMapping(value = "/sum/{numberOne}/{numberTwo}", 
@@ -22,10 +23,9 @@ public class MathController {
 			@PathVariable(value = "numberOne") String numberOne,
 			@PathVariable(value = "numberTwo") String numberTwo
 			) throws Exception {
-		
-		if(!validator.isNumeric(numberOne) || !validator.isNumeric(numberTwo)) {
-			throw new UnsupportedMathOperationException("Por favor informe um valor numérico");
-		}
+
+		validador.validar(numberOne);
+		validador.validar(numberTwo);
 		
 		return service.sum(numberOne, numberTwo);
 	}
@@ -37,9 +37,8 @@ public class MathController {
 			@PathVariable(value= "numberTwo") String numberTwo
 			)throws Exception {
 		
-		if(!validator.isNumeric(numberOne) || !validator.isNumeric(numberTwo)) {
-			throw new UnsupportedMathOperationException("Por favor informe um valor numérico");
-		}
+		validador.validar(numberOne);
+		validador.validar(numberTwo);
 		
 		return service.subtract(numberOne, numberTwo);
 	}
@@ -51,9 +50,8 @@ public class MathController {
 			@PathVariable(value = "numberTwo") String numberTwo
 			) throws Exception {
 		
-		if(!validator.isNumeric(numberOne) || !validator.isNumeric(numberTwo)) {
-			throw new UnsupportedMathOperationException("Por favor informe um valor numérico");
-		}
+		validador.validar(numberOne);
+		validador.validar(numberTwo);
 		
 		return service.multiplication(numberOne, numberTwo);
 	}
@@ -65,9 +63,8 @@ public class MathController {
 			@PathVariable(value= "numberTwo") String numberTwo
 			) throws Exception {
 		
-		if(!validator.isNumeric(numberOne) || !validator.isNumeric(numberTwo)) {
-			throw new UnsupportedMathOperationException("Por favor informe um valor numérico");
-		}
+		validador.validar(numberOne);
+		validador.validar(numberTwo);
 		
 		return service.division(numberOne, numberTwo);
 	}
@@ -79,9 +76,8 @@ public class MathController {
 			@PathVariable(value= "numberTwo") String numberTwo
 			) throws Exception {
 		
-		if(!validator.isNumeric(numberOne) || !validator.isNumeric(numberTwo)) {
-			throw new UnsupportedMathOperationException("Por favor informe um valor numérico");
-		}
+		validador.validar(numberOne);
+		validador.validar(numberTwo);
 		
 		return service.average(numberOne, numberTwo);
 	}
@@ -92,9 +88,7 @@ public class MathController {
 			@PathVariable(value = "number") String number
 			) throws Exception {
 		
-		if(!validator.isNumeric(number)) {
-			throw new UnsupportedMathOperationException("Por favor informe um valor numérico");
-		}
+		validador.validar(number);
 		
 		return service.squareRoot(number);
 	}

@@ -3,7 +3,7 @@ package br.com.project.valitator.impl;
 import org.springframework.stereotype.Component;
 
 import br.com.project.exceptions.UnsupportedMathOperationException;
-import br.com.project.valitator.CheckableValidator;
+import br.com.project.validator.CheckableValidator;
 
 @Component
 public class ValidadorValorObrigatorio implements CheckableValidator<String> {

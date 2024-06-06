@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import br.com.project.exceptions.UnsupportedMathOperationException;
-import br.com.project.valitator.CheckableValidator;
-import br.com.project.valitator.Validator;
+import br.com.project.validator.CheckableValidator;
+import br.com.project.validator.Validator;
 
 @Component
 public class ValidadorNumerico implements Validator<String> {
